@@ -12,14 +12,6 @@ extern DW* resStorage, reservoirStorage;
 extern analogSensorInput* resPressureIn, reservoirPressureIn;
 extern analogSensorOutput* resPressureOut, reservoirPressureOut;
 
-//extern DW brakePipeStorage;
-//extern analogSensorInput brakePipePressureIn;
-//extern analogSensorOutput brakePipePressureOut;
-//
-//extern DW reservoirStorage;
-//extern analogSensorInput reservoirPressureIn;
-//extern analogSensorOutput reservoirPressureOut;
-
 void initialize_brakepipe_sensor(void);
 
 void initialize_reservoir_sensor(void);
