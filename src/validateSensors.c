@@ -120,6 +120,25 @@ void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* press
 	}
 }
 
+void validate_gps_state(gpsSensorBuffer* gps1Buffer, gpsSensorInput* gps1SensorIn, gpsSensorOutput* gps1SensorOut)
+{
+	int validity;
+	stateEvents currentEvent;
+	states nextState;
+
+	currentEvent = E_doNothing;
+	nextState = S_NOTACTIVE;
+
+	gps1Buffer->previous_lat = gps1SensorIn->latitude;
+	gps1Buffer->previous_long = gps1SensorIn->longitude;
+	gps1Buffer->previous_alt = gps1SensorIn->altitude;
+	
+	get_gps_value(gps1SensorIn);
+	
+	validity = validate_gps_reading(gps1SensorIn);
+
+}
+
 
 double get_pressure_value()
 {
@@ -139,25 +158,25 @@ double get_pressure_value()
 
 void get_gps_value(gpsSensorInput* gpsIn)
 {
-	double lat;
-	double longitude;
-	double alt;
 
-	lat = 38.0;
-	longitude = -90.0;
-	alt = 200;
+	gpsIn->latitude = 38.0;
+	gpsIn->longitude = -90.0;
+	gpsIn->altitude = 200;
 
 	int qual;
 	int sats;
 
 	printf("Enter Quality (1-5): \n");
-	scanf_s("%d \n", &qual);
+	scanf_s("%d", &qual);
 
 	printf("Enter Satellites in View (1-13): \n");
-	scanf_s("%d \n", &sats);
+	scanf_s("%d", &sats);
 
 	gpsIn->quality = qual;
 	gpsIn->satellitesInView = sats;
+	//gpsIn->quality = 3;
+	//gpsIn->satellitesInView = 5;
+
 }
 
 int validate_pressure_reading(analogSensorInput* pressureInput)
