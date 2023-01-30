@@ -35,6 +35,15 @@ typedef struct {
 	int logSignals;
 } DW;
 
+typedef struct {
+	int previous_validity;
+	int temporalCounter;
+	int logSignals;
+	double previous_lat;
+	double previous_long;
+	double previous_alt;
+} gpsSensorBuffer;
+
 /* External inputs */
 typedef struct {
 	sensor_types sensor_type;
@@ -100,9 +109,14 @@ extern analogSensorOutput* bpPressureOut, brakePipePressureOut;
 extern DW* resStorage, reservoirStorage;
 extern analogSensorInput* resPressureIn, reservoirPressureIn;
 extern analogSensorOutput* resPressureOut, reservoirPressureOut;
+extern gpsSensorBuffer* gps1BufferPtr, gps1Buffer;
+extern gpsSensorInput* gps1SensorInPtr, gps1SensorIn;
+extern gpsSensorOutput* gps1SensorOutPtr, gps1SensorOut;
 
 extern void validate_pressure_state(DW*, analogSensorInput*, analogSensorOutput*);
+extern void validate_gps_state(gpsSensorBuffer*, gpsSensorInput*, gpsSensorOutput*);
 extern double get_pressure_value();
+extern void get_gps_value(gpsSensorInput*);
 extern int validate_pressure_reading(analogSensorInput*);
 extern int validate_gps_reading(gpsSensorInput*);
 extern int validate_imu_reading(imuSensorInput*);

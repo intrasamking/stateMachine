@@ -12,6 +12,9 @@ DW* resStorage, reservoirStorage;
 analogSensorInput* resPressureIn, reservoirPressureIn;
 analogSensorOutput* resPressureOut, reservoirPressureOut;
 
+gpsSensorBuffer* gps1BufferPtr, gps1Buffer;
+gpsSensorInput* gps1SensorInPtr, gps1SensorIn;
+gpsSensorOutput* gps1SensorOutPtr, gps1SensorOut;
 
 void initialize_brakepipe_sensor(void)
 {
@@ -52,4 +55,36 @@ void initialize_reservoir_sensor(void)
 	resPressureIn = &reservoirPressureIn;
 	resPressureOut = &reservoirPressureOut;
 
+}
+
+void initialize_gps_sensor(void)
+{
+	gps1SensorIn.sensor_name = primary;
+	gps1SensorIn.currentState = S_NOTACTIVE;
+	gps1SensorIn.latitude = 0;
+	gps1SensorIn.longitude = 0;
+	gps1SensorIn.altitude = 0;
+	gps1SensorIn.quality = 0;
+	gps1SensorIn.satellitesInView = 0;
+
+	gps1SensorInPtr = &gps1SensorIn;
+
+	gps1SensorOut.sensor_name = gps1SensorIn.sensor_name;
+	gps1SensorOut.currentState = S_NOTACTIVE;
+	gps1SensorOut.latitude = 0;
+	gps1SensorOut.longitude = 0;
+	gps1SensorOut.altitude = 0;
+	gps1SensorOut.quality = 0;
+	gps1SensorOut.satellitesInView = 0;
+
+	gps1SensorOutPtr = &gps1SensorOut;
+
+	gps1Buffer.logSignals = 0;
+	gps1Buffer.temporalCounter = 0;
+	gps1Buffer.previous_validity = 0;
+	gps1Buffer.previous_lat = 0;
+	gps1Buffer.previous_long = 0;
+	gps1Buffer.previous_alt = 0;
+
+	gps1BufferPtr = &gps1Buffer;
 }

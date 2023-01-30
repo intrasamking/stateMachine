@@ -137,6 +137,29 @@ double get_pressure_value()
 	}
 }
 
+void get_gps_value(gpsSensorInput* gpsIn)
+{
+	double lat;
+	double longitude;
+	double alt;
+
+	lat = 38.0;
+	longitude = -90.0;
+	alt = 200;
+
+	int qual;
+	int sats;
+
+	printf("Enter Quality (1-5): \n");
+	scanf_s("%d \n", &qual);
+
+	printf("Enter Satellites in View (1-13): \n");
+	scanf_s("%d \n", &sats);
+
+	gpsIn->quality = qual;
+	gpsIn->satellitesInView = sats;
+}
+
 int validate_pressure_reading(analogSensorInput* pressureInput)
 {
 	double sensorReading;
