@@ -40,14 +40,12 @@ typedef struct {
 	sensor_types sensor_type;
 	sensor_names sensor_name;
 	states currentState;
-	//void (*get_value)(analogSensorInput *analogSensorInput);
 	double sensorValue;
 } analogSensorInput;
 
 typedef struct {
 	sensor_names sensor_name;
 	states currentState;
-	//void(*get_value)(gpsSensorInput *gpsSensorInput);
 	double latitude;
 	double longitude;
 	double altitude;
@@ -58,7 +56,6 @@ typedef struct {
 typedef struct {
 	sensor_names sensor_name;
 	states currentState;
-	//void(*get_value)(imuSensorInput *imuSensorInput);
 	double ax;
 	double ay;
 	double az;
@@ -78,7 +75,6 @@ typedef struct {
 typedef struct {
 	sensor_names sensor_name;
 	states currentState;
-	//void(*get_value)(gpsSensorOutput *gpsSensorOutput);
 	double latitude;
 	double longitude;
 	double altitude;
@@ -90,7 +86,6 @@ typedef struct {
 typedef struct {
 	sensor_names sensor_name;
 	states currentState;
-	//void(*get_value)(imuSensorOutput *imuSensorOutput);
 	double ax;
 	double ay;
 	double az;
