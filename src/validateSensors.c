@@ -137,6 +137,13 @@ void validate_gps_state(gpsSensorBuffer* gps1Buffer, gpsSensorInput* gps1SensorI
 	
 	validity = validate_gps_reading(gps1SensorIn);
 
+	if (validity != gps1Buffer->previous_validity)
+	{
+		switch (gps1SensorIn->currentState)
+		{
+
+		}
+	}
 }
 
 
