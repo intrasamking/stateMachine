@@ -49,17 +49,17 @@ void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* press
 			if (sensorValidateStorage->temporalCounter > 20)
 			{
 				currentEvent = E_goPassive;
-				nextState = S_NOTACTIVE;
-				pressureOutput->sensorValue = -1;
-				pressureOutput->failure = 1;
+				//nextState = S_NOTACTIVE;
+				//pressureOutput->sensorValue = -1;
+				//pressureOutput->failure = 1;
 				sensorValidateStorage->temporalCounter = 0;
 			}
 			else
 			{
 				currentEvent = E_doNothing;
 				nextState = S_BUFFERING;
-				pressureOutput->sensorValue = sensorValidateStorage->previous_signal;
-				pressureOutput->failure = 1;
+				//pressureOutput->sensorValue = sensorValidateStorage->previous_signal;
+				//pressureOutput->failure = 1;
 				sensorValidateStorage->temporalCounter++;
 			}
 			break;
@@ -120,7 +120,7 @@ void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* press
 	}
 }
 
-void validate_gps_state(gpsSensorBuffer* gps1Buffer, gpsSensorInput* gps1SensorIn, gpsSensorOutput* gps1SensorOut)
+void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn, gpsSensorOutput* gpsSensorOut)
 {
 	int validity;
 	stateEvents currentEvent;
@@ -128,22 +128,113 @@ void validate_gps_state(gpsSensorBuffer* gps1Buffer, gpsSensorInput* gps1SensorI
 
 	currentEvent = E_doNothing;
 	nextState = S_NOTACTIVE;
-
-	gps1Buffer->previous_lat = gps1SensorIn->latitude;
-	gps1Buffer->previous_long = gps1SensorIn->longitude;
-	gps1Buffer->previous_alt = gps1SensorIn->altitude;
 	
-	get_gps_value(gps1SensorIn);
+	get_gps_value(gpsSensorIn);
 	
-	validity = validate_gps_reading(gps1SensorIn);
+	validity = validate_gps_reading(gpsSensorIn);
 
-	if (validity != gps1Buffer->previous_validity)
+	if (validity != gpsBuffer->previous_validity)
 	{
-		switch (gps1SensorIn->currentState)
+		switch (gpsSensorIn->currentState)
 		{
-
+		case S_NOTACTIVE:
+			nextState = S_ACTIVE;
+			break;
+		case S_BUFFERING:
+			nextState = S_ACTIVE;
+			break;
+		//case S_ACTIVE:
+		default:
+			nextState = S_BUFFERING;
+			break;
 		}
 	}
+	else
+	{
+		switch (gpsSensorIn->currentState)
+		{
+		case S_ACTIVE:
+			nextState = S_ACTIVE;
+			break;
+		case S_BUFFERING:
+			if (gpsBuffer->temporalCounter > 20)
+			{
+				nextState = S_NOTACTIVE;
+				gpsBuffer->temporalCounter = 0;
+			}
+			else
+			{
+				nextState = S_BUFFERING;
+				gpsBuffer->temporalCounter++;
+			}
+			break;
+		default:
+			nextState = S_NOTACTIVE;
+			break;
+		}
+
+	}
+
+	if ((gpsSensorIn->currentState = S_BUFFERING) && (nextState != S_BUFFERING))
+	{
+		gpsBuffer->temporalCounter = 0;
+	}
+
+	switch (nextState)
+	{
+	case S_ACTIVE:
+		gpsSensorIn->currentState = S_ACTIVE;
+		gpsBuffer->logSignals = 1;
+		gpsSensorOut->latitude = gpsSensorIn->latitude;
+		gpsSensorOut->longitude = gpsSensorIn->longitude;
+		gpsSensorOut->altitude = gpsSensorIn->altitude;
+		gpsSensorOut->failure = 0;
+
+		gpsBuffer->previous_lat = gpsSensorIn->latitude;
+		gpsBuffer->previous_long = gpsSensorIn->longitude;
+		gpsBuffer->previous_alt = gpsSensorIn->altitude;
+
+		break;
+	case S_BUFFERING:
+		gpsSensorIn->currentState = S_BUFFERING;
+		gpsBuffer->logSignals = 1;
+		gpsSensorOut->latitude = gpsBuffer->previous_lat;
+		gpsSensorOut->longitude = gpsBuffer->previous_long;
+		gpsSensorOut->altitude = gpsBuffer->previous_alt;
+		gpsSensorOut->failure = 1;
+		gpsBuffer->temporalCounter++;
+		break;
+		//case S_NOTACTIVE:
+	default:
+		gpsSensorIn->currentState = S_NOTACTIVE;
+		gpsBuffer->logSignals = 0;
+		gpsSensorOut->latitude = 0;
+		gpsSensorOut->longitude = 0;
+		gpsSensorOut->altitude = 0;
+		gpsSensorOut->failure = 1;
+
+		gpsBuffer->previous_lat = gpsSensorIn->latitude;
+		gpsBuffer->previous_long = gpsSensorIn->longitude;
+		gpsBuffer->previous_alt = gpsSensorIn->altitude;
+
+		break;
+
+	}
+	gpsBuffer->previous_validity = validity;
+
+	switch (nextState)
+	{
+	case S_ACTIVE:
+		printf("Active \n");
+		break;
+	case S_BUFFERING:
+		printf("Buffering \n");
+		break;
+	default:
+		printf("Not Active \n");
+		break;
+	}
+
 }
 
 
