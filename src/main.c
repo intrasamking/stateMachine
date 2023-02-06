@@ -6,7 +6,7 @@
 int main(void)
 {
 	int s;
-	s = 1;
+	sensorPointers sensorAddrs;
 
 	extern DW* bpStorage, brakePipeStorage;
 	extern analogSensorInput* bpPressureIn, brakePipePressureIn;
@@ -16,20 +16,20 @@ int main(void)
 	extern analogSensorInput* resPressureIn, reservoirPressureIn;
 	extern analogSensorOutput* resPressureOut, reservoirPressureOut;
 
-	extern gpsSensorBuffer* gps1BufferPtr, gps1Buffer;
-	extern gpsSensorInput* gps1SensorInPtr, gps1SensorIn;
-	extern gpsSensorOutput* gps1SensorOutPtr, gps1SensorOut;
+	extern gpsStorage* gpsStore1, gpsStorage1;
+	extern gpsSensorInput* gpsIn1, gpsSensorIn1;
+	extern gpsSensorOutput* gpsOut1, gpsSensorOut1;
 
-	initialize_brakepipe_sensor();
-	initialize_reservoir_sensor();
-	initialize_gps_sensor();
-	 
-	while (s = 1)
-	{
-		//validate_pressure_state(bpStorage, bpPressureIn, bpPressureOut);
-		//validate_pressure_state(resStorage, resPressureIn, resPressureOut);
-		validate_gps_state(gps1BufferPtr, gps1SensorInPtr, gps1SensorOutPtr);
-	}
+
+	sensorAddrs = initialize_sensors();
+
+	// 
+	//while (s = 1)
+	//{
+	//	validate_pressure_state(bpStorage, bpPressureIn, bpPressureOut);
+	//	validate_pressure_state(resStorage, resPressureIn, resPressureOut);
+	//	validate_gps_state(gps1BufferPtr, gps1SensorInPtr, gps1SensorOutPtr);
+	//}
 
 	return 0;
 
