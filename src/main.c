@@ -22,9 +22,10 @@ int main(void)
 	gpsInputPtr = &gpsInputMsg;
 
 	int s;
+
 	sensorPointers sensorAddrs;
-	
 	sensorAddrs = initialize_sensors();
+
 	s = 1;
 	double pressureIn;
 	states nextState;
@@ -32,7 +33,7 @@ int main(void)
 	while (s = 1)
 	{
 		pressureIn = get_pressure_value();
-		set_pressure_value(pressureIn, sensorAddrs.bpStore);
+		set_pressure_value(pressureIn, sensorAddrs.bpPresIn);
 		nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
 
 		switch (nextState)
