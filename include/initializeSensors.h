@@ -85,7 +85,6 @@ typedef struct {
 
 typedef struct {
 	sensor_names sensor_name;
-	states currentState;
 	double latitude;
 	double longitude;
 	double altitude;
@@ -96,7 +95,6 @@ typedef struct {
 
 typedef struct {
 	sensor_names sensor_name;
-	states currentState;
 	double ax;
 	double ay;
 	double az;

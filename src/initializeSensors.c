@@ -107,7 +107,6 @@ int initialize_gps_sensor(gpsStorage* gpsStore, gpsSensorInput* gpsSensorIn, gps
 	gpsSensorIn->satellitesInView = 0;
 	gpsSensorIn->validity = 0;
 
-	gpsSensorOut->currentState = S_NOTACTIVE;
 	gpsSensorOut->latitude = 0;
 	gpsSensorOut->longitude = 0;
 	gpsSensorOut->altitude = 0;
@@ -137,7 +136,6 @@ int initialize_accelerometer_sensor(imuStorage* imuStore, imuSensorInput* imuSen
 	imuSensorIn->gz = 0;
 	imuSensorIn->validity = 0;
 
-	imuSensorOut->currentState = S_NOTACTIVE;
 	imuSensorOut->ax = 0;
 	imuSensorOut->ay = 0;
 	imuSensorOut->az = 0;

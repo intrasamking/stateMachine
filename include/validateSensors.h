@@ -3,22 +3,17 @@
 
 #include "initializeSensors.h"
 
-extern void validate_pressure_state(DW*, analogSensorInput*, analogSensorOutput*);
-extern double get_pressure_value();
-extern int validate_pressure_reading(analogSensorInput*);
-extern int validate_gps_reading(gpsSensorInput*);
-extern int validate_imu_reading(imuSensorInput*);
+extern states validate_pressure_state(DW *, analogSensorInput *, analogSensorOutput *);
+extern states validate_gps_state(gpsStorage *, gpsSensorInput *, gpsSensorOutput *);
+extern states validate_imu_state(imuStorage *, imuSensorInput *, imuSensorOutput *);
 
-extern DW* bpStorage, brakePipeStorage;
-extern analogSensorInput* bpPressureIn, brakePipePressureIn;
-extern analogSensorOutput* bpPressureOut, brakePipePressureOut;
+extern void set_pressure_value(double pressureVal, analogSensorInput *);
+extern void set_gps_value(double latVal, double longVal, double altVal, int qual, int sats, gpsSensorInput *);
+extern void set_accelerometer_value(double ax, double ay, double az, double gx, double gy, double gz, imuSensorInput *);
 
-extern DW* resStorage, reservoirStorage;
-extern analogSensorInput* resPressureIn, reservoirPressureIn;
-extern analogSensorOutput* resPressureOut, reservoirPressureOut;
+extern int validate_pressure_reading(analogSensorInput *);
+extern int validate_gps_reading(gpsSensorInput *);
+extern int validate_imu_reading(imuSensorInput *);
 
-extern gpsStorage* gpsStore1, gpsStorage1;
-extern gpsSensorInput* gpsIn1, gpsSensorIn1;
-extern gpsSensorOutput* gpsOut1, gpsSensorOut1;
 
 #endif

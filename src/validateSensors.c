@@ -1,10 +1,9 @@
 #include "validateSensors.h"
-#include "initializeBrakeSystems.h"
 #include <math.h>
 #include <stdio.h>
 
 
-void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* pressureInput, analogSensorOutput* pressureOutput)
+states validate_pressure_state(DW *sensorValidateStorage, analogSensorInput *pressureInput, analogSensorOutput *pressureOutput)
 {
 	int validity;
 	stateEvents currentEvent;
@@ -15,7 +14,6 @@ void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* press
 
 
 	sensorValidateStorage->previous_signal = pressureInput->sensorValue;
-	pressureInput->sensorValue = get_pressure_value();
 
 	validity = validate_pressure_reading(pressureInput);
 
@@ -119,9 +117,13 @@ void validate_pressure_state(DW* sensorValidateStorage, analogSensorInput* press
 	{
 		//Send signals to tablet
 	}
+
+	states returnVal;
+	returnVal = pressureInput->currentState;
+	return returnVal;
 }
 
-void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn, gpsSensorOutput* gpsSensorOut)
+states validate_gps_state(gpsStorage *gpsBuffer, gpsSensorInput *gpsSensorIn, gpsSensorOutput *gpsSensorOut)
 {
 	int validity;
 	stateEvents currentEvent;
@@ -129,9 +131,7 @@ void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn,
 
 	currentEvent = E_doNothing;
 	nextState = S_NOTACTIVE;
-	
-	get_gps_value(gpsSensorIn);
-	
+		
 	validity = validate_gps_reading(gpsSensorIn);
 
 	if (validity != gpsBuffer->previous_validity)
@@ -191,17 +191,17 @@ void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn,
 		gpsSensorOut->altitude = gpsSensorIn->altitude;
 		gpsSensorOut->failure = 0;
 
-		gpsBuffer->previous_lat = gpsSensorIn->latitude;
-		gpsBuffer->previous_long = gpsSensorIn->longitude;
-		gpsBuffer->previous_alt = gpsSensorIn->altitude;
+		gpsBuffer->previousLat = gpsSensorIn->latitude;
+		gpsBuffer->previousLong = gpsSensorIn->longitude;
+		gpsBuffer->previousAlt = gpsSensorIn->altitude;
 
 		break;
 	case S_BUFFERING:
 		gpsSensorIn->currentState = S_BUFFERING;
 		gpsBuffer->logSignals = 1;
-		gpsSensorOut->latitude = gpsBuffer->previous_lat;
-		gpsSensorOut->longitude = gpsBuffer->previous_long;
-		gpsSensorOut->altitude = gpsBuffer->previous_alt;
+		gpsSensorOut->latitude = gpsBuffer->previousLat;
+		gpsSensorOut->longitude = gpsBuffer->previousLong;
+		gpsSensorOut->altitude = gpsBuffer->previousAlt;
 		gpsSensorOut->failure = 1;
 		gpsBuffer->temporalCounter++;
 		break;
@@ -214,9 +214,9 @@ void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn,
 		gpsSensorOut->altitude = 0;
 		gpsSensorOut->failure = 1;
 
-		gpsBuffer->previous_lat = gpsSensorIn->latitude;
-		gpsBuffer->previous_long = gpsSensorIn->longitude;
-		gpsBuffer->previous_alt = gpsSensorIn->altitude;
+		gpsBuffer->previousLat = gpsSensorIn->latitude;
+		gpsBuffer->previousLong = gpsSensorIn->longitude;
+		gpsBuffer->previousAlt = gpsSensorIn->altitude;
 
 		break;
 
@@ -236,45 +236,36 @@ void validate_gps_state(gpsSensorBuffer* gpsBuffer, gpsSensorInput* gpsSensorIn,
 		break;
 	}
 
+	states returnVal;
+	returnVal = gpsSensorIn->currentState;
+	return returnVal;
+
 }
 
-
-double get_pressure_value()
+void set_pressure_value(double pressureVal, analogSensorInput *pressureInput)
 {
-	double pressureVal;
+	pressureInput->sensorValue = pressureVal;
 
-	printf("Enter pressure: ");
-	if (scanf_s("%lf", &pressureVal) == 1)
-	{
-		return pressureVal;
-	}
-	else
-	{
-		pressureVal = 171;
-		return pressureVal;
-	}
 }
 
-void get_gps_value(gpsSensorInput* gpsIn)
+void set_gps_value(double latVal, double longVal, double altVal, int qual, int sats, gpsSensorInput *gpsIn)
 {
-
-	gpsIn->latitude = 38.0;
-	gpsIn->longitude = -90.0;
-	gpsIn->altitude = 200;
-
-	int qual;
-	int sats;
-
-	printf("Enter Quality (1-5): \n");
-	scanf_s("%d", &qual);
-
-	printf("Enter Satellites in View (1-13): \n");
-	scanf_s("%d", &sats);
-
+	gpsIn->latitude = latVal;
+	gpsIn->longitude = longVal;
+	gpsIn->altitude = altVal;
 	gpsIn->quality = qual;
 	gpsIn->satellitesInView = sats;
-	//gpsIn->quality = 3;
-	//gpsIn->satellitesInView = 5;
+
+}
+
+void set_accelerometer_value(double ax, double ay, double az, double gx, double gy, double gz, imuSensorInput* imuIn)
+{
+	imuIn->ax = ax;
+	imuIn->ay = ay;
+	imuIn->az = az;
+	imuIn->gx = gx;
+	imuIn->gy = gy;
+	imuIn->gz = gz;
 
 }
 
