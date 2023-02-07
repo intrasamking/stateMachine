@@ -29,11 +29,13 @@ int main(void)
 	s = 1;
 	double pressureIn;
 	states nextState;
-	 
+	analogSensorInput *testVal;
+	testVal = sensorAddrs.bpPresIn;
+
 	while (s = 1)
 	{
 		pressureIn = get_pressure_value();
-		set_pressure_value(pressureIn, sensorAddrs.bpPresIn);
+		set_pressure_value(pressureIn,testVal);
 		nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
 
 		switch (nextState)

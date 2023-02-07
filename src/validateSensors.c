@@ -245,7 +245,7 @@ states validate_gps_state(gpsStorage *gpsBuffer, gpsSensorInput *gpsSensorIn, gp
 void set_pressure_value(double pressureVal, analogSensorInput *pressureInput)
 {
 	pressureInput->sensorValue = pressureVal;
-
+	return;
 }
 
 void set_gps_value(double latVal, double longVal, double altVal, int qual, int sats, gpsSensorInput *gpsIn)
