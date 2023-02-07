@@ -23,17 +23,30 @@ int main(void)
 
 	int s;
 	sensorPointers sensorAddrs;
-
+	
 	sensorAddrs = initialize_sensors();
-
+	s = 1;
 	double pressureIn;
-
+	states nextState;
 	 
 	while (s = 1)
 	{
 		pressureIn = get_pressure_value();
-		get_gps_value(gpsInputPtr);
+		set_pressure_value(pressureIn, sensorAddrs.bpStore);
+		nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
 
+		switch (nextState)
+		{
+		case S_ACTIVE:
+			printf("Active \n");
+			break;
+		case S_BUFFERING:
+			printf("Buffering \n");
+			break;
+		default:
+			printf("Not Active \n");
+			break;
+		}
 	}
 
 	return 0;
