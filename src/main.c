@@ -1,6 +1,5 @@
 #include <stddef.h>
 #include <stdio.h>     
-#include "initializeSensors.h"
 #include "validateSensors.h"                  
 
 struct gpsMsg {
@@ -12,14 +11,14 @@ struct gpsMsg {
 };
 
 double get_pressure_value();
-void get_gps_value(struct gpsMsg *);
+void get_gps_values(struct gpsMsg *);
 
 int main(void)
 {
 
-	struct gpsMsg gpsInputMsg = { .latVal = 0 };
-	struct gpsMsg *gpsInputPtr;
-	gpsInputPtr = &gpsInputMsg;
+	//struct gpsMsg gpsInputMsg = { .latVal = 0 };
+	//struct gpsMsg *gpsInputPtr;
+	//gpsInputPtr = &gpsInputMsg;
 
 	int s;
 
@@ -35,7 +34,7 @@ int main(void)
 	while (s = 1)
 	{
 		pressureIn = get_pressure_value();
-		set_pressure_value(pressureIn,testVal);
+		set_analog_value(pressureIn,testVal);
 		nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
 
 		switch (nextState)
@@ -72,7 +71,7 @@ double get_pressure_value()
 	}
 }
 
-void get_gps_value(struct gpsMsg *gpsIn)
+void get_gps_values(struct gpsMsg *gpsIn)
 {
 
 	gpsIn->latVal = 38.0;

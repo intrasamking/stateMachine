@@ -75,8 +75,6 @@ int initialize_pressure_sensor(DW *pressureStorage, analogSensorInput *pressureS
 	pressureStorage->previous_validity = 0;
 	pressureStorage->logSignals = 0;
 	return 1;
-
-
 }
 
 int initialize_temperature_sensor(DW* pressureStorage, analogSensorInput* pressureSensorIn, analogSensorOutput* pressureSensorOut)
