@@ -13,7 +13,7 @@ struct gpsMsg {
 double get_pressure_value();
 void get_gps_values(struct gpsMsg *);
 
-int main(void)
+int main()
 {
 
 	//struct gpsMsg gpsInputMsg = { .latVal = 0 };
@@ -22,32 +22,44 @@ int main(void)
 
 	int s;
 
-	sensorPointers sensorAddrs;
-	sensorAddrs = initialize_sensors();
+	//sensorPointers sensorAddrs;
+
+	analogIn *inputPtr = init();
+	//analogOut outputPtr = initOut();
+	//analogStorage storagePtr = initSt();
+
+	initialize_pressure_sensorIn(inputPtr, primary);
+	printf("SensorValue \n");
+	printf("%f \n", get_analog_value(inputPtr));
+
+	//outputPtr = intialize_pressure_sensorOut(inputPtr, outputPtr);
+	//storagePtr = intialize_pressure_sensorStorage(inputPtr, storagePtr);
+
+	//sensorAddrs = initialize_sensors(inputPtr, outputPtr, storagePtr);
 
 	s = 1;
-	double pressureIn;
-	states nextState;
+	//double pressureIn;
+	//states nextState;
 
-	while (s = 1)
-	{
-		pressureIn = get_pressure_value();
-		set_analog_value(pressureIn, sensorAddrs.bpPresIn);
-		nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
+	//while (s = 1)
+	//{
+	//	pressureIn = get_pressure_value();
+	//	set_analog_value(pressureIn, sensorAddrs.bpPresIn);
+	//	nextState = validate_pressure_state(sensorAddrs.bpStore, sensorAddrs.bpPresIn, sensorAddrs.bpPresOut);
 
-		switch (nextState)
-		{
-		case S_ACTIVE:
-			printf("Active \n");
-			break;
-		case S_BUFFERING:
-			printf("Buffering \n");
-			break;
-		default:
-			printf("Not Active \n");
-			break;
-		}
-	}
+	//	switch (nextState)
+	//	{
+	//	case S_ACTIVE:
+	//		printf("Active \n");
+	//		break;
+	//	case S_BUFFERING:
+	//		printf("Buffering \n");
+	//		break;
+	//	default:
+	//		printf("Not Active \n");
+	//		break;
+	//	}
+	//}
 
 	return 0;
 
