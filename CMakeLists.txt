@@ -4,6 +4,6 @@ project(stateMachine C)
 
 include_directories( include )
 
-set( SOURCES src/main.c src/validateSensors.c)
+set( SOURCES src/main.c src/sensorStateFunctions.c)
 
 add_executable( stateMachine ${SOURCES} )
