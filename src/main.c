@@ -24,6 +24,7 @@ int main()
 
 	int s;
 	s = 1;
+	analogIn *in = init();
 
 	initialize_pressure_sensor(in, primary);
 	set_analog_value(in, 50);
