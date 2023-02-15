@@ -18,12 +18,12 @@ typedef enum { temperature, pressure } sensor_types;
 
 typedef enum { primary, secondary, tertiary } sensor_names;
 
-//typedef struct {
-//	double previous_signal;
-//	int previous_validity;
-//	int temporalCounter;
-//	int logSignals;
-//} DW;
+typedef struct {
+	double previous_signal;
+	int previous_validity;
+	int temporalCounter;
+	int logSignals;
+} DW;
 
 typedef struct {
 	double previousLat;
@@ -47,20 +47,12 @@ typedef struct {
 } imuStorage;
 
 /* External inputs */
-//typedef struct {
-//	sensor_types sensor_type;
-//	sensor_names sensor_name;
-//	states currentState;
-//	double sensorValue;
-//} analogSensorInput;
-
-typedef struct analogSensorInput analogIn;
-typedef struct analogSensorOutput analogOut;
-typedef struct DW analogStorage;
-
-analogIn *init();
-analogOut *initOut();
-analogStorage *initSt();
+typedef struct {
+	sensor_types sensor_type;
+	sensor_names sensor_name;
+	states currentState;
+	double sensorValue;
+} analogSensorInput;
 
 typedef struct {
 	sensor_names sensor_name;
@@ -86,12 +78,12 @@ typedef struct {
 } imuSensorInput;
 
 /* External outputs */
-//typedef struct {
-//	sensor_types sensor_type;
-//	sensor_names sensor_name;
-//	double sensorValue;
-//	int failure;
-//} analogSensorOutput;
+typedef struct {
+	sensor_types sensor_type;
+	sensor_names sensor_name;
+	double sensorValue;
+	int failure;
+} analogSensorOutput;
 
 typedef struct {
 	sensor_names sensor_name;
