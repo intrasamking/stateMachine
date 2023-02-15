@@ -167,3 +167,31 @@ enum validityStates validateGPSreading(gpsSensorInput *gpsIn)
 		return notValid;
 	}
 }
+
+enum validityStates validateIMUreading(imuSensorInput *imuIn)
+{
+	
+	double ax = imuIn->ax;
+	double ay = imuIn->ay;
+	double az = imuIn->az;
+	double gx = imuIn->gx;
+	double gy = imuIn->gy;
+	double gz = imuIn->gz;
+
+	if ((ax == -1000) || (ay == -1000) || (az == -1000))
+	{
+		return noConnect;
+	}
+	else if ((fabs(ax) > 78.48) || (fabs(ay) > 78.48) || (fabs(az) > 78.48))
+	{
+		return notValid;
+	}
+	else if ((fabs(gx) > 245) || (fabs(gy) > 245) || (fabs(gz) > 245))
+	{
+		return notValid;
+	}
+	else
+	{
+		return Valid;
+	}
+}
