@@ -3,30 +3,40 @@
 //#include "validateSensors.h"                  
 #include "sensorStateFunctions.h"
 
+extern analogSensorInput brakePipeSensorIn;
 extern analogStorage brakePipeStorage;
+extern analogSensorOutput brakePipeSensorOut;
+
+extern analogSensorInput reservoirSensorIn;
 extern analogStorage reservoirStorage;
+extern analogSensorOutput reservoirSensorOut;
 
-extern analogSensorInput brakePipeSensor;
-extern analogSensorInput reservoirSensor;
+extern gpsStorage gpsStorageFr;
+extern gpsStorage gpsStorageRr;
 
-extern gpsStorage gpsStorageFront;
-extern gpsStorage gpsStorageRear;
+extern gpsSensorInput gpsSensorFrIn;
+extern gpsSensorInput gpsSensorRrIn;
 
-extern gpsSensorInput gpsSensorFront;
-extern gpsSensorInput gpsSensorRear;
+extern gpsSensorOutput gpsSensorFrOut;
+extern gpsSensorOutput gpsSensorRrOut;
 
-extern imuStorage imuStorageFront;
-extern imuStorage imuStorageRear;
+extern imuStorage imuStorageFr;
+extern imuStorage imuStorageRr;
 
-extern imuSensorInput imuSensorFront;
-extern imuSensorInput imuSensorRr;
+extern imuSensorInput imuSensorFrIn;
+extern imuSensorInput imuSensorRrIn;
+
+extern imuSensorOutput imuSensorFrOut;
+extern imuSensorOutput imuSensorRrOut;
 
 int main()
 {
 
 	int s;
-	initializeAnalogSensor(&brakePipeSensor, &brakePipeStorage, pressure, primary);
-	initializeAnalogSensor(&reservoirSensor, &reservoirStorage, pressure, primary);
+	initializeAnalogSensor(&brakePipeSensorIn, &brakePipeStorage, &brakePipeSensorOut, pressure, primary);
+	initializeAnalogSensor(&reservoirSensorIn, &reservoirStorage, &reservoirSensorOut, pressure, primary);
+	initializeGPSsensor(&gpsSensorFrIn, &gpsStorageFr, &gpsSensorFrOut, primary);
+	initializeGPSsensor(&gpsSensorRrIn, &gpsStorageRr, &gpsSensorRrOut, secondary);
 
 	s = 1;
 	return 0;
