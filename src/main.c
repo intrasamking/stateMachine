@@ -38,55 +38,72 @@ int main()
 	initializeGPSsensor(&gpsSensorFrIn, &gpsStorageFr, &gpsSensorFrOut, primary);
 	initializeIMUsensor(&imuSensorFrIn, &imuStorageFr, &imuSensorFrOut, primary);
 
-	// Set Pressure Value
-	double sensorInput = 85;
-	setAnalogValue(&brakePipeSensorIn, sensorInput);
+	s = 1;
+	double sensorInput = 0;
+	int intInput = 0;
+	while (s == 1)
+	{
+		//printf("Input Target Percentage: ");
+		//scanf_s("%lf", &sensorInput);
 
-	// Validate Pressure Value
-	analogSensorOutput sOut;
-	sOut = analogSensorValidation(&brakePipeSensorIn);
-	printf("Pressure Sensor \n");
-	printf("%d - %lf \n", sOut.state, sOut.sensorVal);
+		//// Set Pressure Value
+		//setAnalogValue(&brakePipeSensorIn, sensorInput);
+
+		//// Validate Pressure Value
+		//analogSensorOutput sOut;
+		//sOut = analogSensorValidation(&brakePipeSensorIn);
+		//printf("Pressure Sensor \n");
+		//printf("%d - %lf \n", sOut.state, sOut.sensorVal);
 
 
-	// Generic GPS Message to use for input
-	gpsMessage gmsg;
+		//printf("Input GPS Satellites: ");
+		//scanf_s("%d", &intInput);
 
-	gmsg.latitude = 38;
-	gmsg.longitude = -90; 
-	gmsg.altitude = 100; 
-	gmsg.quality = 4;
-	gmsg.satellitesInView = 6;
+		//// Generic GPS Message to use for input
 
-	// Set GPS Value
-	setGPSvalue(&gpsSensorFrIn, &gmsg);
+		////setGPSvalue(&gpsSensorFrIn, &gmsg);
 
-	// Validate GPS Value
-	gpsSensorOutput gOut;
-	gOut = gpsSensorValidation(&gpsSensorFrIn);
+		//gpsMessage gmsg;
 
-	printf("GPS Sensor \n");
-	printf("%d \n", gOut.state);
+		//gmsg.latitude = 38;
+		//gmsg.longitude = -90; 
+		//gmsg.altitude = 100; 
+		//gmsg.quality = 4;
+		//gmsg.satellitesInView = intInput;
 
-	// Generic IMU Message to use for Input
-	imuMessage imsg;
+		//// Set GPS Value
+		//setGPSvalue(&gpsSensorFrIn, &gmsg);
 
-	imsg.ax = 1;
-	imsg.ay = 2;
-	imsg.az = 3;
-	imsg.gx = 1;
-	imsg.gy = 10;
-	imsg.gz = 12;
+		//// Validate GPS Value
+		//gpsSensorOutput gOut;
+		//gOut = gpsSensorValidation(&gpsSensorFrIn);
 
-	// Set IMU Value
-	setIMUvalue(&imuSensorFrIn, &imsg);
+		//printf("GPS Sensor State \n");
+		//printf("%d \n", gOut.state);
 
-	// Validate IMU Value
-	imuSensorOutput iOut;
-	iOut = imuSensorValidation(&imuSensorFrIn);
+		printf("Input Imu Acceleration: ");
+		scanf_s("%lf", &sensorInput);
+ 
+		// Generic IMU Message to use for Input
+		imuMessage imsg;
 
-	printf("IMU Sensor \n");
-	printf("%d", iOut.state);
+		//imsg.ax = 1;
+		imsg.ax = 1;
+		imsg.ay = sensorInput;
+		imsg.az = 3;
+		imsg.gx = 1;
+		imsg.gy = 10;
+		imsg.gz = 12;
 
+		// Set IMU Value
+		setIMUvalue(&imuSensorFrIn, &imsg);
+
+		// Validate IMU Value
+		imuSensorOutput iOut;
+		iOut = imuSensorValidation(&imuSensorFrIn);
+
+		printf("IMU Sensor \n");
+		printf("%d \n", iOut.state);
+	}
 	return 0; 
 }

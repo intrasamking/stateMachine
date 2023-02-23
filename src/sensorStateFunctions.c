@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "sensorStateFunctions.h"
 
 analogSensorInput brakePipeSensorIn;
@@ -182,6 +183,7 @@ gpsSensorOutput gpsSensorValidation(gpsSensorInput *gpsInput)
 			case S_ACTIVE:
 				{
 					nextState = S_ACTIVE;
+
 					break;
 				}
 			case S_BUFFERING:
@@ -189,18 +191,17 @@ gpsSensorOutput gpsSensorValidation(gpsSensorInput *gpsInput)
 					if (gpsInput->gps_store->temporalCounter > 20)
 					{
 						nextState = S_NOTACTIVE;
-						gpsInput->gps_store->temporalCounter = 0;
 						break;
 					}
 					else
 					{
 						nextState = S_BUFFERING;
-						gpsInput->gps_store->temporalCounter++;
 						break;
 					}
 				}
 			default:
 				nextState = S_NOTACTIVE;
+
 				break;
 		}
 	}
@@ -217,6 +218,8 @@ gpsSensorOutput gpsSensorValidation(gpsSensorInput *gpsInput)
 				gpsInput->gps_out->vx = gpsInput->vx;
 				gpsInput->gps_out->vy = gpsInput->vy;
 				gpsInput->gps_out->failure = 0;
+				gpsInput->gps_store->temporalCounter = 0;
+
 				break;
 			}
 		case S_BUFFERING:
@@ -242,6 +245,8 @@ gpsSensorOutput gpsSensorValidation(gpsSensorInput *gpsInput)
 				gpsInput->gps_out->vx = 0;
 				gpsInput->gps_out->vy = 0;
 				gpsInput->gps_out->failure = 1;
+				gpsInput->gps_store->temporalCounter = 0;
+
 				break;
 			}
 	}
@@ -305,13 +310,11 @@ imuSensorOutput imuSensorValidation(imuSensorInput *imuInput)
 					if (imuInput->imu_store->temporalCounter > 20)
 					{
 						nextState = S_NOTACTIVE;
-						imuInput->imu_store->temporalCounter = 0;
 						break;
 					}
 					else
 					{
 						nextState = S_BUFFERING;
-						imuInput->imu_store->temporalCounter++;
 						break;
 					}
 				}
@@ -334,6 +337,8 @@ imuSensorOutput imuSensorValidation(imuSensorInput *imuInput)
 				imuInput->imu_out->gy = imuInput->gy;
 				imuInput->imu_out->gz = imuInput->gz;
 				imuInput->imu_out->failure = 0;
+				imuInput->imu_store->temporalCounter = 0;
+
 				break;
 			}
 		case S_BUFFERING:
@@ -361,6 +366,8 @@ imuSensorOutput imuSensorValidation(imuSensorInput *imuInput)
 				imuInput->imu_out->gy = 0;
 				imuInput->imu_out->gz = 0;
 				imuInput->imu_out->failure = 1;
+				imuInput->imu_store->temporalCounter = 0;
+
 				break;
 			}
 	}
