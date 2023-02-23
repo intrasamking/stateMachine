@@ -27,6 +27,14 @@ imuSensorInput imuSensorRrIn;
 imuSensorOutput imuSensorFrOut;
 imuSensorOutput imuSensorRrOut;
 
+void initializeAnalogMemory(analogStorage *analogStore);
+void initializeGPSmemory(gpsStorage *gpsStore);
+void initializeIMUmemory(imuStorage *imuStore);
+
+void initializeAnalogOutput(analogSensorOutput *analogOut);
+void initializeGPSoutput(gpsSensorOutput *gpsOut);
+void initializeIMUoutput(imuSensorOutput *imuOut);
+
 analogSensorOutput analogSensorValidation(analogSensorInput *sensorInput)
 {
 	enum validityStates validity;
@@ -119,10 +127,11 @@ analogSensorOutput analogSensorValidation(analogSensorInput *sensorInput)
 				sensorInput->sensor_out->sensorVal = -1000;
 				sensorInput->sensor_out->failure = 1;
 				break;
-			}
+			} 
 	}
 
 	sensorInput->sensor_store->previous_validity = validity;
+	sensorInput->sensor_out->state = sensorInput->currentState;
 
 	analogSensorOutput returnVal;
 	returnVal = getAnalogValueOutput(sensorInput-> sensor_out);
@@ -238,6 +247,7 @@ gpsSensorOutput gpsSensorValidation(gpsSensorInput *gpsInput)
 	}
 
 	gpsInput->gps_store->previous_validity = validity;
+	gpsInput->gps_out->state = gpsInput->currentState;
 
 	gpsSensorOutput returnVal;
 	returnVal = getGPSvalueOutput(gpsInput->gps_out);
@@ -356,13 +366,16 @@ imuSensorOutput imuSensorValidation(imuSensorInput *imuInput)
 	}
 
 	imuInput->imu_store->previous_validity = validity;
+	imuInput->imu_out->state = imuInput->currentState;
 
 	imuSensorOutput returnVal;
 	returnVal = getIMUvalueOutput(imuInput->imu_out);
 	return returnVal;
 }
+
 void initializeAnalogSensor(analogSensorInput * analogIn, analogStorage * analogStore, analogSensorOutput *analogOut, sensorTypes sType, sensorNames sName)
 {
+
 	initializeAnalogMemory(analogStore);
 	initializeAnalogOutput(analogOut);
 
@@ -373,7 +386,6 @@ void initializeAnalogSensor(analogSensorInput * analogIn, analogStorage * analog
 	analogIn->currentState = S_NOTACTIVE;
 	analogIn->sensor_store = analogStore;
 	analogIn->sensor_out = analogOut;
-	return;
 
 }
 
@@ -383,9 +395,8 @@ void initializeAnalogMemory(analogStorage *storeIn)
 	storeIn->previous_validity = notValid;
 	storeIn->temporalCounter = 0;
 	storeIn->logSignals = 0;
-
-	return;
 }
+
 
 void initializeAnalogOutput(analogSensorOutput *analogOut)
 {
@@ -413,7 +424,7 @@ void initializeGPSsensor(gpsSensorInput *gpsSensorIn, gpsStorage *gpsStore, gpsS
 	return;
 }
 
-void initalizeGPSmemory(gpsStorage *gpsStore)
+void initializeGPSmemory(gpsStorage *gpsStore)
 {
 	gpsStore->previousLat = 0;
 	gpsStore->previousLong = 0;
@@ -526,6 +537,7 @@ gpsSensorOutput getGPSvalueOutput(gpsSensorOutput *gpsOut)
 	returnVal.state = gpsOut->state;
 	returnVal.vx = gpsOut->vx;
 	returnVal.vy = gpsOut->vy;
+	returnVal.failure = gpsOut->failure;
 
 	return returnVal;
 }
@@ -540,6 +552,8 @@ imuSensorOutput getIMUvalueOutput(imuSensorOutput *imuOut)
 	returnVal.gx = imuOut->gx;
 	returnVal.gy = imuOut->gy;
 	returnVal.gz = imuOut->gz;
+	returnVal.state = imuOut->state;
+	returnVal.failure = imuOut->failure;
 
 	return returnVal;
 }
@@ -553,6 +567,24 @@ enum validityStates validatePressureReading(analogSensorInput *analogIn)
 		return noConnect;
 	}
 	else if ((sensorVal < 160) && (sensorVal > 0))
+	{
+		return Valid;
+	}
+	else
+	{
+		return notValid;
+	}
+}
+
+enum validityStates validateTemperatureReading(analogSensorInput *analogIn)
+{
+	double sensorVal = analogIn->sensorValue;
+
+	if (sensorVal == -1000)
+	{
+		return noConnect;
+	}
+	else if ((sensorVal < 212) && (sensorVal > 0))
 	{
 		return Valid;
 	}

@@ -164,33 +164,33 @@ extern imuSensorInput imuSensorRrIn;
 extern imuSensorOutput imuSensorFrOut;
 extern imuSensorOutput imuSensorRrOut;
 
-analogSensorOutput analogSensorValidation(analogSensorInput *);
-gpsSensorOutput gpsSensorValidation(gpsSensorInput *);
-imuSensorOutput imuSensorValidation(imuSensorInput *);
+extern analogSensorOutput analogSensorValidation(analogSensorInput *);
+extern gpsSensorOutput gpsSensorValidation(gpsSensorInput *);
+extern imuSensorOutput imuSensorValidation(imuSensorInput *);
 
-void initializeAnalogSensor(analogSensorInput *, analogStorage *, analogSensorOutput *, sensorNames sName, sensorTypes sTypes);
-void initializeGPSsensor(gpsSensorInput *, gpsStorage *, gpsSensorOutput *, sensorNames sName);
-void initializeIMUsensor(imuSensorInput *, imuStorage *, imuSensorOutput *, sensorNames sName);
+extern void initializeAnalogSensor(analogSensorInput *, analogStorage *, analogSensorOutput *, sensorTypes, sensorNames);
+extern void initializeGPSsensor(gpsSensorInput *, gpsStorage *, gpsSensorOutput *, sensorNames sName);
+extern void initializeIMUsensor(imuSensorInput *, imuStorage *, imuSensorOutput *, sensorNames sName);
 
-void initializeAnalogMemory(analogStorage *);
-void initializeGPSmemory(gpsStorage *);
-void initializeIMUmemory(imuStorage *);
+extern void initializeAnalogMemory(analogStorage *);
+extern void initializeGPSmemory(gpsStorage *);
+extern void initializeIMUmemory(imuStorage *);
 
-void intializeAnalogOutput(analogSensorOutput *);
-void initializeGPSoutput(gpsSensorOutput *);
-void initializeIMUoutput(imuSensorOutput *);
+extern void initializeAnalogOutput(analogSensorOutput *);
+extern void initializeGPSoutput(gpsSensorOutput *);
+extern void initializeIMUoutput(imuSensorOutput *);
 
-void setAnalogValue(analogSensorInput *, double sensorVal);
-void setGPSvalue(gpsSensorInput *, gpsMessage *);
-void setIMUvalue(imuSensorInput *, imuMessage *);
+extern void setAnalogValue(analogSensorInput *, double sensorVal);
+extern void setGPSvalue(gpsSensorInput *, gpsMessage *);
+extern void setIMUvalue(imuSensorInput *, imuMessage *);
 
-analogSensorOutput getAnalogValueOutput(analogSensorOutput *);
-gpsSensorOutput getGPSvalueOutput(gpsSensorOutput *);
-imuSensorOutput getIMUvalueOutput(imuSensorOutput *);
+extern analogSensorOutput getAnalogValueOutput(analogSensorOutput *);
+extern gpsSensorOutput getGPSvalueOutput(gpsSensorOutput *);
+extern imuSensorOutput getIMUvalueOutput(imuSensorOutput *);
 
-enum validityStates validatePressureReading(analogSensorInput *);
-enum validityStates validateTemperatureReading(analogSensorInput *);
-enum validityStates validateGPSreading(gpsSensorInput *);
-enum validityStates validateIMUreading(imuSensorInput *);
+extern enum validityStates validatePressureReading(analogSensorInput *);
+extern enum validityStates validateTemperatureReading(analogSensorInput *);
+extern enum validityStates validateGPSreading(gpsSensorInput *);
+extern enum validityStates validateIMUreading(imuSensorInput *);
 
 #endif //SENSOR_STATE_h
